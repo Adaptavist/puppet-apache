@@ -528,6 +528,17 @@ define apache::vhost(
     ],
     notify  => Service['httpd'],
   }
+
+  # by convention all desired ${VARIABLE} in the output must be passed to template as 
+  # __PERCENTAGE_SIGN{VARIABLE} from hiera as it sucks a lot and is not able to escape it
+  # that is why we will execute substitution of it now. Disable this once they fix escaping.
+  exec { "fix___PERCENTAGE_SIGN_FOR_${priority_real}-${filename}.conf" :
+          command     => "sed -i 's/__PERCENTAGE_SIGN/%/g' ${::apache::vhost_dir}/${priority_real}-${filename}.conf",
+          logoutput   => on_failure,
+          onlyif      => ["test -f ${::apache::vhost_dir}/${priority_real}-${filename}.conf"],
+          require     => File["${priority_real}-${filename}.conf"],
+  }
+
   if $::osfamily == 'Debian' {
     $vhost_enable_dir = $::apache::vhost_enable_dir
     $vhost_symlink_ensure = $ensure ? {
