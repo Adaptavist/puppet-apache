@@ -138,6 +138,7 @@ define apache::vhost(
     $scriptaliases               = [],
     $proxy_dest                  = undef,
     $proxy_pass                  = undef,
+    $proxy_balancer              = undef,
     $suphp_addhandler            = $::apache::params::suphp_addhandler,
     $suphp_engine                = $::apache::params::suphp_engine,
     $suphp_configpath            = $::apache::params::suphp_configpath,
@@ -369,6 +370,13 @@ define apache::vhost(
     }
     if ! defined(Class['apache::mod::proxy_http']) {
       include ::apache::mod::proxy_http
+    }
+  }
+
+  # Load mod_proxy_balancer if needed and not yet loaded
+  if ($proxy_balancer) {
+    if ! defined(Class['apache::mod::proxy_balancer']) {
+      include ::apache::mod::proxy_balancer
     }
   }
 
