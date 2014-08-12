@@ -1,0 +1,15 @@
+<% if @proxy_balancer -%>
+
+<% [@proxy_balancer].flatten.compact.each do |balancer| %>
+  ## Configure Proxy balancer '<%= balancer['name'] %>'
+  <Proxy balancer://<%= balancer['name'] %>>
+    <%- Array(balancer['nodes']).each do |node| -%>
+    BalancerMember <%= node %>
+    <%- end -%>
+    <% if balancer['proxyset'] %>
+    ProxySet <%= balancer['proxyset'] %> 
+    <% end %>
+  </Proxy>
+<% end %>
+
+<% end -%>
