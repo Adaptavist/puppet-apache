@@ -10,7 +10,18 @@ define apache::mod (
     fail('You must include the apache base class before using any apache defined resources')
   }
 
-  $mod = $name
+  #if there is an ~ within the name split into array to find module name and load prefix (used for forcing module load order for Debian systems)
+  if ( '~' in $name ) {
+    $mod_details = split($name, '~')
+    $mod = $mod_details[0]
+    $load_prefix = $mod_details[1]
+
+  }
+  else {
+    $mod = $name
+    $load_prefix = ''
+  }
+
   #include apache #This creates duplicate resources in rspec-puppet
   $mod_dir = $::apache::mod_dir
 
@@ -83,9 +94,10 @@ define apache::mod (
 
   if $::osfamily == 'Debian' {
     $enable_dir = $::apache::mod_enable_dir
+    $link_path = "${enable_dir}/${load_prefix}${mod}.load"
     file{ "${mod}.load symlink":
       ensure  => link,
-      path    => "${enable_dir}/${mod}.load",
+      path    => "${link_path}",
       target  => "${mod_dir}/${mod}.load",
       owner   => 'root',
       group   => $::apache::params::root_group,
