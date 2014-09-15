@@ -2,6 +2,9 @@
 ServerTokens <%= @server_tokens %>
 ServerSignature <%= @server_signature %>
 TraceEnable <%= @trace_enable %>
+<%- if @extended_status -%>
+ExtendedStatus <%= extended_status %>
+<%- end -%>
 
 ServerName "<%= @servername %>"
 ServerRoot "<%= @server_root %>"

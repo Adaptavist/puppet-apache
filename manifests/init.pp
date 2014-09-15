@@ -57,6 +57,7 @@ class apache (
   $server_signature     = 'On',
   $trace_enable         = 'On',
   $package_ensure       = 'installed',
+  $extended_status      = undef,
 ) inherits ::apache::params {
   validate_bool($default_vhost)
   validate_bool($default_ssl_vhost)
