@@ -12,10 +12,11 @@ class apache::mod::mime (
     before  => File[$::apache::mod_dir],
     notify  => Service['httpd'],
   }
+
   if $mime_support_package {
     package { $mime_support_package:
       ensure => 'installed',
-      before => File["${::apache::mod_dir}/mime.conf"],
+      before => File['mime.conf'],
     }
   }
 }

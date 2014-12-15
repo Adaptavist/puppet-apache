@@ -77,9 +77,15 @@ define apache::mod (
     }
   }
 
+  if $::osfamily == "RedHat"{
+    $prefixed_path = "${mod_dir}/${load_prefix}${mod}.load"
+  } else {
+    $prefixed_path = "${mod_dir}/${mod}.load"
+  }
+
   file { "${mod}.load":
     ensure  => file,
-    path    => "${mod_dir}/${mod}.load",
+    path    => $prefixed_path,
     owner   => 'root',
     group   => $::apache::params::root_group,
     mode    => '0644',
