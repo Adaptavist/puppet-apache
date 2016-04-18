@@ -65,7 +65,10 @@ class apache::params inherits ::apache::version {
     $suphp_configpath     = undef
     $mod_packages         = {
       'auth_kerb'   => 'mod_auth_kerb',
-      'authnz_ldap' => 'mod_authz_ldap',
+      'authnz_ldap' => $::apache::version::distrelease ? {
+        '7'     => 'mod_ldap',
+        default => 'mod_authz_ldap',
+      },
       'fastcgi'     => 'mod_fastcgi',
       'fcgid'       => 'mod_fcgid',
       'passenger'   => 'mod_passenger',
