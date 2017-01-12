@@ -32,7 +32,7 @@ class apache::mod::ssl (
 
   ::apache::mod { 'ssl': }
 
-  if $apache_version >= 2.4 {
+  if versioncmp($apache_version, '2.4') >= 0 {
     ::apache::mod { 'socache_shmcb': }
   }
 
