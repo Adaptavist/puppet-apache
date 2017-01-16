@@ -428,7 +428,7 @@ define apache::vhost(
       directoryindex => $directoryindex,
     }
 
-    if $apache_version == 2.4 {
+    if $apache_version == '2.4' {
       $_directory_version = {
         require => 'all granted',
       }

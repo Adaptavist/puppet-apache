@@ -42,7 +42,7 @@ class apache::default_mods (
         ::apache::mod { 'usertrack': }
         ::apache::mod { 'version': }
 
-        if $apache_version >= 2.4 {
+        if versioncmp($apache_version, '2.4') >= 0 {
           # Lets fork it
           ::apache::mod { 'systemd': }
 
