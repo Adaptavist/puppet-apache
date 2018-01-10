@@ -89,6 +89,8 @@ class apache::params inherits ::apache::version {
     }
     $mod_libs             = {
       'php5' => 'libphp5.so',
+      'php6' => 'libphp6.so',
+      'php7' => 'libphp7.so',
       'nss'  => 'libmodnss.so',
     }
     $conf_template        = 'apache/httpd.conf.erb'
